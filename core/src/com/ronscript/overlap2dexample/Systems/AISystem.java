@@ -10,15 +10,15 @@ import com.ronscript.overlap2dexample.utils.Mappers;
  * @author Ron
  * @since 7/12/2016
  */
-public class StateMachineSystem extends IteratingSystem {
+public class AISystem extends IteratingSystem {
 
-    public StateMachineSystem() {
+    public AISystem() {
         super(Family.all(AIComponent.class).get());
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        AIComponent ai = Mappers.stateMachine.get(entity);
-        ai.stateMachine.update();
+        AIComponent ai = Mappers.ai.get(entity);
+        ai.fsm.update();
     }
 }

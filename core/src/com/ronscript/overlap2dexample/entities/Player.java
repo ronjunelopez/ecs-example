@@ -12,7 +12,6 @@ public class Player extends Sprite {
     public Entity entity;
 
     public Player() {
-
     }
 
     public void attack() {

@@ -8,12 +8,12 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.ronscript.overlap2dexample.Components.AIComponent;
 import com.ronscript.overlap2dexample.Components.AnimationComponent;
-import com.ronscript.overlap2dexample.Components.TextureComponent;
 import com.ronscript.overlap2dexample.Components.MovementComponent;
 import com.ronscript.overlap2dexample.Components.PhysicsComponent;
 import com.ronscript.overlap2dexample.Components.SizeComponent;
 import com.ronscript.overlap2dexample.Components.StateComponent;
 import com.ronscript.overlap2dexample.Components.TargetComponent;
+import com.ronscript.overlap2dexample.Components.TextureComponent;
 import com.ronscript.overlap2dexample.Components.TransformComponent;
 import com.ronscript.overlap2dexample.GameAssets;
 import com.ronscript.overlap2dexample.entities.builders.EntityBuilder;
@@ -37,7 +37,7 @@ public class Slime{
     public MovementComponent movement;
     public PhysicsComponent physics;
     public AIComponent ai;
-    public  TargetComponent target;
+    public TargetComponent target;
 
     private boolean safe = true;
 
@@ -95,9 +95,8 @@ public class Slime{
         animation.map.put(SlimeState.MOVE_RIGHT.ordinal(), GameAssets.slime_right_side);
         animation.map.put(SlimeState.EXPLODE.ordinal(), GameAssets.slime_explode);
 
-
         state.setState(0);
-        ai.stateMachine = new DefaultStateMachine(this, SlimeState.SLEEP);
+        ai.fsm = new DefaultStateMachine(this, SlimeState.SLEEP);
 
         entity.add(graphic);
         entity.add(size);
@@ -132,14 +131,12 @@ public class Slime{
         playerBody.getPosition();
         MovementComponent playerMovement = Mappers.movement.get(player);
 
-
-
         switch (playerMovement.state) {
             case WEST:
-                ai.stateMachine.changeState(SlimeState.MOVE_RIGHT);
+                ai.fsm.changeState(SlimeState.MOVE_RIGHT);
                 break;
             case EAST:
-                ai.stateMachine.changeState(SlimeState.MOVE_LEFT);
+                ai.fsm.changeState(SlimeState.MOVE_LEFT);
                 break;
         }
     }
@@ -149,15 +146,15 @@ public class Slime{
     }
 
     public void sleep() {
-        ai.stateMachine.changeState(SlimeState.SLEEP);
+        ai.fsm.changeState(SlimeState.SLEEP);
     }
 
     public void runAway() {
-        ai.stateMachine.changeState(SlimeState.RUN_AWAY);
+        ai.fsm.changeState(SlimeState.RUN_AWAY);
     }
 
     public void kill() {
-        ai.stateMachine.changeState(SlimeState.EXPLODE);
+        ai.fsm.changeState(SlimeState.EXPLODE);
     }
 
 }

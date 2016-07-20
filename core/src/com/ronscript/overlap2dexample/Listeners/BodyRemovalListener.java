@@ -2,6 +2,7 @@ package com.ronscript.overlap2dexample.Listeners;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
+import com.badlogic.gdx.physics.box2d.World;
 import com.ronscript.overlap2dexample.Managers.BodyManager;
 import com.ronscript.overlap2dexample.utils.Mappers;
 
@@ -11,6 +12,8 @@ import com.ronscript.overlap2dexample.utils.Mappers;
 public class BodyRemovalListener implements EntityListener {
 
     BodyManager manager;
+    World world;
+
 
     public BodyRemovalListener(BodyManager manager) {
         this.manager = manager;

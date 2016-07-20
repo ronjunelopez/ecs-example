@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.ronscript.overlap2dexample.BaseGame;
@@ -19,6 +20,7 @@ import com.ronscript.overlap2dexample.utils.Constants;
 public class Play extends BaseScreen {
 
 
+    SpriteBatch batch;
     GameWorld gameWorld;
 
     Viewport gameViewport;
@@ -28,7 +30,8 @@ public class Play extends BaseScreen {
     public Play(BaseGame game) {
         super(game);
         hideLoading = false;
-        gameWorld = new GameWorld();
+        batch = new SpriteBatch();
+        gameWorld = new GameWorld(batch);
     }
 
     @Override
@@ -46,7 +49,6 @@ public class Play extends BaseScreen {
     public void onShow() {
         gameWorld.setProcessing(true);
         gameWorld.buildWorld();
-
         gameViewport = new FitViewport(Constants.FRUSTUM_WIDTH, Constants.FRUSTUM_HEIGHT, gameWorld.getCamera());
         gameWorld.getCamera().position.set(gameViewport.getWorldWidth()/2, gameViewport.getWorldHeight()/2, 0);
     }
@@ -54,9 +56,6 @@ public class Play extends BaseScreen {
     @Override
     public void onResize(int width, int height) {
 //        hud.getViewport().update(width, height, true);
-
-//        gameWorld.getHud().getStage().getViewport().update(width, height, true);
-//        gameWorld.getDashboard().getStage().getViewport().update(width, height , true);
         gameViewport.update(width, height);
     }
 
@@ -91,8 +90,6 @@ public class Play extends BaseScreen {
 
     @Override
     public void onDispose() {
-        gameWorld.setProcessing(false);
-        gameWorld.getEngine().removeAllEntities();
         gameWorld.dispose();
         Gdx.app.log("Play Screen", "disposed");
     }

@@ -9,6 +9,5 @@ import com.badlogic.gdx.ai.fsm.StateMachine;
  * @since 7/12/2016
  */
 public class AIComponent<E, S extends State<E>> implements Component {
-
-    public StateMachine<E, S> stateMachine;
+    public StateMachine<E, S> fsm;
 }

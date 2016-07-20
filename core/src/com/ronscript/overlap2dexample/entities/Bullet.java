@@ -6,10 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.ronscript.overlap2dexample.Components.BulletComponent;
-import com.ronscript.overlap2dexample.Components.TextureComponent;
 import com.ronscript.overlap2dexample.Components.MovementComponent;
 import com.ronscript.overlap2dexample.Components.PhysicsComponent;
 import com.ronscript.overlap2dexample.Components.SizeComponent;
+import com.ronscript.overlap2dexample.Components.TextureComponent;
 import com.ronscript.overlap2dexample.Components.TransformComponent;
 import com.ronscript.overlap2dexample.entities.builders.EntityBuilder;
 import com.ronscript.overlap2dexample.utils.Constants;
@@ -18,7 +18,7 @@ import com.ronscript.overlap2dexample.utils.Mappers;
 /**
  * Created by Ron on 7/2/2016.
  */
-public abstract class Bullet implements Poolable{
+public abstract class Bullet extends Entity implements Poolable {
 
     protected World world;
     protected PooledEngine engine;

@@ -18,7 +18,8 @@ public class CameraManager {
         return ourInstance;
     }
 
-    OrthographicCamera camera;
+    private OrthographicCamera camera;
+    public boolean debugmode = false;
 
     private CameraManager() {
     }
@@ -42,7 +43,9 @@ public class CameraManager {
                 || position.x < camPos.x - (CAMERA_WIDTH + (offsetX * WorldUtils.pixelsToMetres)) / 2
                 || position.y  > camPos.y + (CAMERA_HEIGHT + (offsetY * WorldUtils.pixelsToMetres)) / 2
                 || position.y  < camPos.y - (CAMERA_HEIGHT + (offsetY * WorldUtils.pixelsToMetres)) / 2  ) {
-            Gdx.app.log("Outside", position.toString());
+            if (debugmode) {
+                Gdx.app.log("Outside", position.toString());
+            }
             isOutside = true;
         }
         return isOutside;

@@ -1,17 +1,20 @@
 package com.ronscript.overlap2dexample.entities.builders;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.ai.fsm.DefaultStateMachine;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.ronscript.overlap2dexample.Components.AIComponent;
 import com.ronscript.overlap2dexample.Components.GunComponent;
 import com.ronscript.overlap2dexample.Components.MovementComponent;
+import com.ronscript.overlap2dexample.Components.NodeComponent;
 import com.ronscript.overlap2dexample.Components.SizeComponent;
 import com.ronscript.overlap2dexample.Components.StateComponent;
 import com.ronscript.overlap2dexample.Components.TextureComponent;
 import com.ronscript.overlap2dexample.Components.TransformComponent;
 import com.ronscript.overlap2dexample.GameAssets;
 import com.ronscript.overlap2dexample.entities.Gun;
+import com.ronscript.overlap2dexample.entities.states.GunState;
 import com.ronscript.overlap2dexample.utils.Constants;
 
 /**
@@ -27,7 +30,7 @@ public class GunBuilder {
         engine = factory.getEngine();
 
         gun = new Gun();
-        gun.entity = factory.createEntity(Constants.Flags.GUN);
+        gun.entity = factory.createEntity(Constants.Flags.WEAPON);
         gun.ai = engine.createComponent(AIComponent.class);
         gun.gun = engine.createComponent(GunComponent.class);
         gun.graphic = engine.createComponent(TextureComponent.class);
@@ -35,19 +38,24 @@ public class GunBuilder {
         gun.transform = engine.createComponent(TransformComponent.class);
         gun.movement = engine.createComponent(MovementComponent.class);
         gun.state = engine.createComponent(StateComponent.class);
-        gun.ai.stateMachine = new DefaultStateMachine<Gun, com.ronscript.overlap2dexample.entities.states.GunState>(gun, com.ronscript.overlap2dexample.entities.states.GunState.RELOAD);
-        gun.state.setState(MovementComponent.State.IDLE.ordinal());
+        gun.node = engine.createComponent(NodeComponent.class);
+
+
+        gun.ai.fsm = new DefaultStateMachine<Entity, GunState>(gun.entity, GunState.RELOAD);
+        gun.state.setState(MovementComponent.Direction.IDLE.ordinal());
         gun.gun.factory = factory;
         gun.graphic.region = new TextureRegion(GameAssets.cannon_down);
     }
 
     public void setTransform(float posX, float posY) {
         gun.transform.position.set(posX, posY);
+
     }
 
     public void setSize(float width, float height) {
         gun.size.width = width;
         gun.size.height = height;
+        gun.transform.origin.set(width / 2, height / 2);
     }
 
     public TextureRegion getTextureRegion() {
@@ -63,6 +71,8 @@ public class GunBuilder {
         gun.entity.add(gun.movement);
         gun.entity.add(gun.state);
         gun.entity.add(gun.ai);
+
+        gun.entity.add(gun.node);
 
         engine.addEntity(gun.entity);
     }

@@ -2,6 +2,7 @@ package com.ronscript.overlap2dexample.Systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.ronscript.overlap2dexample.Components.BulletComponent;
@@ -33,8 +34,11 @@ public class BulletSystem extends IteratingSystem {
         PhysicsComponent physics = Mappers.physics.get(entity);
         MovementComponent movement = Mappers.movement.get(entity);
 
-//        move(entity, deltaTime);
+        Gdx.app.log("", "" + factory.getEngine().getEntitiesFor(Mappers.bulletFamily).size());
+//        deadend(entity, deltaTime);
+
         Body body = physics.body;
+
         Vector2 bulletPosition = body.getPosition();
 
 //        float distance = bulletPosition.dst(bullet.destination);  // scaled by speed);
@@ -48,23 +52,32 @@ public class BulletSystem extends IteratingSystem {
 //        float DEFINED_PRECISION = Constants.TIME_STEP / 2;
 
         if(bullet.alive) {
-            body.setLinearVelocity(movement.velocity);
+            if (bullet.fired) {
+                body.setLinearVelocity(movement.velocity.set(getVelocity(6, bulletPosition, bullet.destination)));
+                bullet.fired = false;
+            }
         } else {
             /*
                 TODO when the body stop the position is not accurate.
              */
             body.setLinearVelocity(0,0);
             bullet.alive = false;
-            factory.removeEntity(entity);
         }
         float bulletOffset = 6; // 6 meters
         if(isOutOfScreen(bulletPosition, bulletOffset)){
             bullet.alive = false;
-            factory.removeEntity(entity);
         }
     }
 
-//    private void move(Entity entity, float deltaTime) {
+    public Vector2 getVelocity(float speed, Vector2 currentPosition, Vector2 targetPosition) {
+        // Copied sights position and subtracted by bullet position
+        Vector2 targetDirection = targetPosition.cpy().sub(currentPosition);
+        return targetDirection
+                .nor() // normalize to avoid getting the direction as speed
+                .scl(speed);  // scaled by speed
+    }
+
+//    private void deadend(Entity entity, float deltaTime) {
 //        BulletComponent bullet = Mappers.bullet.get(entity);
 //        PhysicsComponent physics = Mappers.physics.get(entity);
 //
@@ -91,7 +104,7 @@ public class BulletSystem extends IteratingSystem {
 //        float DEFINED_PRECISION = Constants.TIME_STEP;
 //        // check if the bullet is near or maybe match the touch point
 //        if(distance >= DEFINED_PRECISION) {
-//            // move the bullet
+//            // deadend the bullet
 //            body.setLinearVelocity(velocity);
 //        } else {
 //            // stop the bullet

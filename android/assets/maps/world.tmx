@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="16" tileheight="16" nextobjectid="14">
  <tileset firstgid="1" name="cointainer_2" tilewidth="32" tileheight="32" tilecount="1" columns="1">
   <image source="cointainer_2.png" width="32" height="32"/>
  </tileset>
- <layer name="Tile Layer 1" width="30" height="30">
+ <layer name="background" width="30" height="30">
   <data encoding="base64" compression="zlib">
    eJztwzEJAAAMA7DWv+mqGOxIIAkAwK2q+vIABZwBaQ==
   </data>
  </layer>
+ <objectgroup color="#83c834" draworder="index" name="wall">
+  <object id="12" name="test" x="-1" y="274">
+   <polyline points="0,0 0,206 495,207 496,-3 1,-2"/>
+  </object>
+ </objectgroup>
 </map>

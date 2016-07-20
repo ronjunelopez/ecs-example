@@ -8,9 +8,9 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class WorldUtils {
 
-    public static final float UNIT_PIXEL = 32.0f; // 32 pixel
-    public static final float pixelsToMetres = 1 / UNIT_PIXEL; // 32 pixel = 1 meter (1/32)
-    public static final float metresToPixels = UNIT_PIXEL;
+    public static final float UNITS_PIXEL = 32.0f; // 32 pixel
+    public static final float pixelsToMetres = 1 / UNITS_PIXEL; // 32 pixel = 1 meter (1/32)
+    public static final float metresToPixels = UNITS_PIXEL;
 
     public static float frustum(float pixels){
         return pixels * pixelsToMetres;
@@ -25,11 +25,11 @@ public class WorldUtils {
     }
     /**
      * Convert the Vector3 touchpoint to Vector2 to get the sights position
-     * and scaled the touchpoint by UNIT_PIXEL to get the pixel value
+     * and scaled the touchpoint by UNITS_PIXEL to get the pixel value
      * @return Vector2 position in PIXELS.
      */
     public static Vector2 touchpointPixels(Vector3 touchpoint){
-        Vector3 touchpointPixel = touchpoint.cpy().scl(UNIT_PIXEL);
+        Vector3 touchpointPixel = touchpoint.cpy().scl(UNITS_PIXEL);
         return new Vector2(touchpointPixel.x, touchpointPixel.y);
     }
 

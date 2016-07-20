@@ -36,7 +36,7 @@ public class PhysicsSystem extends IntervalIteratingSystem implements Disposable
 
         if(physics  != null) {
             Vector2 bodyPosition = physics.body.getPosition();
-            transform.position.set(bodyPosition.cpy().sub(transform.origin.x, transform.origin.y));
+            transform.position.set(bodyPosition);
             transform.rotation = physics.body.getAngle() * MathUtils.radiansToDegrees;
         }
 

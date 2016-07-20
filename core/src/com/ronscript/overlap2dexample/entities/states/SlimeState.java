@@ -114,6 +114,10 @@ public enum SlimeState implements State<Slime> {
 
     @Override
     public boolean onMessage(Slime entity, Telegram telegram) {
+        if (telegram.message == 0) {
+            Gdx.app.log("Slime", "hello, big daddy! yummmmmmy");
+            return true;
+        }
         return false;
     }
 }

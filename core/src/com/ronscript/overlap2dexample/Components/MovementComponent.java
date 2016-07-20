@@ -9,13 +9,13 @@ import com.badlogic.gdx.math.Vector2;
 public class MovementComponent implements Component {
 
 
-    public final Vector2 accel = new Vector2();
+    public final Vector2 acceleration = new Vector2();
     public final Vector2 velocity = new Vector2();
 
-    public enum State {
+    public enum Direction {
         IDLE, NORTH,SOUTH,EAST,WEST, NORTH_WEST, NORTH_EAST, SOUTH_EAST, SOUTH_WEST
     }
 
-    public State state = State.IDLE;
+    public Direction state = Direction.IDLE;
 
 }

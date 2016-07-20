@@ -6,11 +6,13 @@ import com.ronscript.overlap2dexample.Components.AIComponent;
 import com.ronscript.overlap2dexample.Components.AnimationComponent;
 import com.ronscript.overlap2dexample.Components.BulletComponent;
 import com.ronscript.overlap2dexample.Components.CameraComponent;
+import com.ronscript.overlap2dexample.Components.CharacterComponent;
 import com.ronscript.overlap2dexample.Components.GunComponent;
+import com.ronscript.overlap2dexample.Components.InputComponent;
 import com.ronscript.overlap2dexample.Components.MovementComponent;
 import com.ronscript.overlap2dexample.Components.NodeComponent;
 import com.ronscript.overlap2dexample.Components.PhysicsComponent;
-import com.ronscript.overlap2dexample.Components.CharacterComponent;
+import com.ronscript.overlap2dexample.Components.ScriptComponent;
 import com.ronscript.overlap2dexample.Components.SizeComponent;
 import com.ronscript.overlap2dexample.Components.StateComponent;
 import com.ronscript.overlap2dexample.Components.TextureComponent;
@@ -32,8 +34,10 @@ public class Mappers {
     public static ComponentMapper<SizeComponent> size = ComponentMapper.getFor(SizeComponent.class);
     public static ComponentMapper<BulletComponent> bullet = ComponentMapper.getFor(BulletComponent.class);
     public static ComponentMapper<GunComponent> gun = ComponentMapper.getFor(GunComponent.class);
-    public static ComponentMapper<AIComponent> stateMachine = ComponentMapper.getFor(AIComponent.class);
+    public static ComponentMapper<AIComponent> ai = ComponentMapper.getFor(AIComponent.class);
+    public static ComponentMapper<ScriptComponent> script = ComponentMapper.getFor(ScriptComponent.class);
     public static ComponentMapper<NodeComponent> node = ComponentMapper.getFor(NodeComponent.class);
+    public static ComponentMapper<InputComponent> input = ComponentMapper.getFor(InputComponent.class);
 
     public static Family gunFamily = Family.all(GunComponent.class, TransformComponent.class, SizeComponent.class).get();
     public static Family animationFamily = Family.all(AnimationComponent.class, TextureComponent.class,  StateComponent.class).get();

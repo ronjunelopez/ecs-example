@@ -5,16 +5,13 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.ronscript.overlap2dexample.Components.SizeComponent;
 import com.ronscript.overlap2dexample.Components.TextureComponent;
 import com.ronscript.overlap2dexample.Components.TransformComponent;
 import com.ronscript.overlap2dexample.Managers.CameraManager;
 import com.ronscript.overlap2dexample.Views.Stages.Hud;
 import com.ronscript.overlap2dexample.utils.Mappers;
-import com.ronscript.overlap2dexample.utils.WorldUtils;
 
 import java.util.Comparator;
 
@@ -30,26 +27,20 @@ public class RenderingSystem extends SortedIteratingSystem {
 
     private boolean debug = false;
 
-    //Tiled map variables
-    private static TmxMapLoader maploader;
-    private static TiledMap tiledMap;
-    private static OrthogonalTiledMapRenderer tiledMapRenderer;
+    private TiledMapRenderer tiledMapRenderer;
 
-    public RenderingSystem() {
+    public RenderingSystem(SpriteBatch batch, TiledMapRenderer tiledMapRenderer) {
 
-        super(Family.all(SizeComponent.class, TextureComponent.class,TransformComponent.class).get(), new ZComparator());
+        super(Family.all(SizeComponent.class, TextureComponent.class, TransformComponent.class).get(), new ZComparator());
 
-        this.batch = new SpriteBatch();
+        this.batch = batch;
+        this.tiledMapRenderer = tiledMapRenderer;
 
         CameraManager.getInstance().setupCamera();
         camera = CameraManager.getInstance().getCamera();
 
         hud = new Hud(batch);
         hud.getStage().setDebugAll(debug);
-
-        maploader = new TmxMapLoader();
-        tiledMap = maploader.load("maps/world.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, WorldUtils.pixelsToMetres);
 
     }
 
@@ -65,12 +56,12 @@ public class RenderingSystem extends SortedIteratingSystem {
         TransformComponent transform = Mappers.transform.get(entity);
 
         if(texture != null && size !=null && transform !=null){
-            if(texture.region == null) {
+            if (texture.region.getTexture() == null) {
                 return;
             }
             batch.draw(texture.region,
-                    transform.position.x ,
-                    transform.position.y ,
+                    transform.position.x - transform.origin.x,
+                    transform.position.y - transform.origin.y,
                     transform.origin.x,
                     transform.origin.y,
                     size.width,
@@ -85,10 +76,10 @@ public class RenderingSystem extends SortedIteratingSystem {
 
     @Override
     public void update (float deltaTime) {
-        tiledMapRenderer.setView(camera); // draw only what camera's size
-        tiledMapRenderer.render();
         camera.update();
         batch.setProjectionMatrix(camera.combined);
+        tiledMapRenderer.setView(camera); // draw only what camera's size
+        tiledMapRenderer.render();
         batch.begin();
         super.update(deltaTime);
         batch.end();

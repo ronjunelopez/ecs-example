@@ -22,7 +22,6 @@ public class PlayerInputAdapter extends InputAdapter {
     private boolean pressed = false;
     private boolean touched = false;
 
-
     private Vector3 touchpoint = new Vector3();
 
     public PlayerInputAdapter(Camera camera) {
@@ -76,7 +75,6 @@ public class PlayerInputAdapter extends InputAdapter {
         // This will make the touchpoint point get the position of world and not the camera screen
         camera.unproject(touchpoint.set(screenX, screenY, 0));
         touched = true;
-//                dragging = true;
         return true;
     }
 

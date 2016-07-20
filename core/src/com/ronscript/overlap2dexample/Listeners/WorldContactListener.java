@@ -7,11 +7,11 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.ronscript.overlap2dexample.entities.Cannonball;
-import com.ronscript.overlap2dexample.entities.Player;
+import com.ronscript.overlap2dexample.Components.BulletComponent;
 import com.ronscript.overlap2dexample.entities.Slime;
 import com.ronscript.overlap2dexample.entities.builders.EntityBuilder;
 import com.ronscript.overlap2dexample.utils.Constants;
+import com.ronscript.overlap2dexample.utils.Mappers;
 
 /**
  * Created by Ron on 6/30/2016.
@@ -42,7 +42,21 @@ public class WorldContactListener implements ContactListener {
                 onPlayerAndItemCollision(fixtureA, fixtureB);
                 break;
             case Constants.CATEGORY_BULLET | Constants.CATEGORY_ENEMY:
-                onBulletAndEnemyCollision(fixtureA,fixtureB);
+//                onBulletAndEnemyCollision(fixtureA,fixtureB);
+                break;
+            case Constants.CATEGORY_BULLET | Constants.CATEGORY_GROUND:
+//                onBulletAndEnemyCollision(fixtureA,fixtureB);
+                if (fixtureA.getUserData() instanceof Entity) {
+                    Entity bullet = (Entity) fixtureA.getUserData();
+                    BulletComponent component = Mappers.bullet.get(bullet);
+                    component.alive = false;
+//                      factory.removeEntity(bullet);
+                } else {
+                    Entity bullet = (Entity) fixtureB.getUserData();
+                    BulletComponent component = Mappers.bullet.get(bullet);
+                    component.alive = false;
+//                      factory.removeEntity(bullet);
+                }
                 break;
             case Constants.CATEGORY_PLAYER | Constants.CATEGORY_PLAYER:
                 Gdx.app.log("Player", "Hits character");
@@ -95,8 +109,8 @@ public class WorldContactListener implements ContactListener {
         if(fixtureB.getUserData() instanceof  Slime){
             Gdx.app.log("Fixture B", "SLIME");
             Slime slime = (Slime) fixtureB.getUserData();
-            Player player = (Player) fixtureA.getUserData();
-            slime.sense(player.entity);
+            Entity player = (Entity) fixtureA.getUserData();
+            slime.sense(player);
         } else {
             Gdx.app.log("Fixture A", "SLIME");
             Slime slime = (Slime) fixtureA.getUserData();
@@ -109,25 +123,25 @@ public class WorldContactListener implements ContactListener {
 
     public void onBulletAndEnemyCollision(Fixture fixtureA, Fixture fixtureB) {
         Gdx.app.log("Bullet", "Hits Enemy");
-        if(fixtureA.getUserData() instanceof  Cannonball){
+        if (fixtureA.getUserData() instanceof Entity) {
             Gdx.app.log("Entity A", "BULLET");
-            Cannonball cannonball = (Cannonball)  fixtureA.getUserData();
-            cannonball.physics.body.setLinearVelocity(0,0);
-            cannonball.bullet.alive = false;
-            factory.removeEntity(cannonball.entity);
+            Entity bullet = (Entity) fixtureA.getUserData();
+//            Slime slime = (Slime) fixtureB.getUserData();
+
+
+            factory.removeEntity(bullet);
         } else {
             Gdx.app.log("Entity B", "BULLET");
-            Cannonball cannonball = (Cannonball)  fixtureB.getUserData();
-            cannonball.physics.body.setLinearVelocity(0,0);
-            cannonball.bullet.alive = false;
-            factory.removeEntity(cannonball.entity);
+            Entity bullet = (Entity) fixtureB.getUserData();
+            factory.removeEntity(bullet);
         }
 
         if(isSlime(fixtureB)){
             Gdx.app.log("Entity B", "SLIME");
             Slime slime = (Slime) fixtureB.getUserData();
             slime.kill();
-        } else {
+        }
+        if (isSlime(fixtureA)) {
             Gdx.app.log("Entity A", "SLIME");
             Slime slime = (Slime) fixtureA.getUserData();
             slime.kill();
@@ -150,15 +164,15 @@ public class WorldContactListener implements ContactListener {
             Gdx.app.log("Entity B", "SLIME");
             Slime slime = (Slime) fixtureB.getUserData();
 
-            Player player = (Player) fixtureA.getUserData();
-            slime.sense(player.entity);
+            Entity player = (Entity) fixtureA.getUserData();
+            slime.sense(player);
         } else {
             Gdx.app.log("Entity A", "SLIME");
             Slime slime = (Slime) fixtureA.getUserData();
 
 
-            Player player = (Player)fixtureB.getUserData();
-            slime.sense(player.entity);
+            Entity player = (Entity) fixtureB.getUserData();
+            slime.sense(player);
         }
     }
 }

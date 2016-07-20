@@ -24,7 +24,7 @@ public class Constants {
         PLAYER,
         SLIME,
         COIN,
-        GUN,
+        WEAPON,
         BULLET,
         CAMERA
     }
@@ -43,7 +43,7 @@ public class Constants {
     public static final short MASK_ITEM =  ~CATEGORY_ITEM; // Cannot collide with enemy objects
     public static final short MASK_SENSOR =  CATEGORY_PLAYER; // Can collide only with players
     public static final short MASK_GROUND = -1; // Can collide with everything
-    public static final short MASK_BULLET = CATEGORY_ENEMY;
+    public static final short MASK_BULLET = CATEGORY_ENEMY | CATEGORY_GROUND;
     public static final short MASK_GUN = CATEGORY_ITEM;
 
 }
